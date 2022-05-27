@@ -10,8 +10,20 @@ function assertEquals(expected, actual, message) {
     }
 }
 
+function assertContains(match, actual, message) {
+    assertionsCount++;
+    if (!Array.isArray(actual)) {
+        throw new TestFailedException('Excpect to have array: ' + message);
+    }
+
+    if (!actual.some(match)) {
+        throw new TestFailedException(message);
+    }
+}
+
 const assert = {
     equals: assertEquals,
+    contains: assertContains,
 };
 
 module.exports = {

@@ -27,11 +27,12 @@ function run() {
         errors: [],
         warnings: [],
     };
+    let progress = '';
     console.log('running tests');
     Object.keys(testPlan).map(suiteName => {
         const total = Object.keys(testPlan[suiteName]).length;
         report.total += total;
-        console.log(` * found ${total} tests in [${suiteName}]`);
+        // console.log(` * found ${total} tests in [${suiteName}]`);
         for (testName of Object.keys(testPlan[suiteName])) {
             const test = testPlan[suiteName][testName];
             try {
@@ -43,6 +44,9 @@ function run() {
                         test: testName,
                         error: new NoAssertionsException(),
                     });
+                    progress += 'W';
+                } else {
+                    progress += '.';
                 }
             } catch (error) {
                 if (error instanceof TestFailedException) {
@@ -51,19 +55,23 @@ function run() {
                         test: testName,
                         error,
                     });
+                    progress += 'F';
                 } else {
                     report.errors.push({
                         suite: suiteName,
                         test: testName,
                         error,
                     });
+                    progress += 'E';
                 }
             } finally {
                 report.run++;
                 report.assertions += getAssertionsCount();
+                process.stdout.write(progress + '\r');
             }
         }
     });
+    console.log('');
     console.log('done');
     console.dir(report);
 }
