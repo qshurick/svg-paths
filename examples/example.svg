@@ -1,0 +1,10 @@
+<svg width="240" height="320" viewBox="0 0 240 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="m 10 10 l 100 0 l 0 100 l -100 0 z" fill="red" stroke="blue">
+    <animate
+      attributeName="d"
+      values="m 10 10 l 100 0 l 0 100 l -100 0 z;m 60 10 l 50 100 l -100 0 l 0 0 z;m 10 10 l 100 0 l 0 100 l -100 0 z"
+      dur="10s"
+      repeatCount="indefinite"
+    />
+  </path>
+</svg>
