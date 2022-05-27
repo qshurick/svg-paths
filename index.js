@@ -4,7 +4,7 @@ const { fixBoth } = require('./src/main');
 const stuff = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
-    terminal: false,
+    terminal: true,
 });
 
 const paths = [];
