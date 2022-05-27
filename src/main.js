@@ -35,6 +35,14 @@ function getTokens(path) {
     return tokens;
 }
 
+function getSignature(path) {
+    const tokens = getTokens(path);
+    const signature = tokens.map(({ token }) => token).join('');
+
+    return signature;
+}
+
 module.exports  = {
-    getTokens
+    getTokens,
+    getSignature,
 };

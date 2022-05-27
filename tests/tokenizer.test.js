@@ -1,6 +1,6 @@
 const { describe, it } = require('./lib/testRunner');
 const { assert } = require('./lib/assertions');
-const { getTokens } = require('../src/main');
+const { getTokens, getSignature } = require('../src/main');
 
 const supportedCommands = {
     'Move to point with absolute coordinates': ['M 100 101', 'M'],
@@ -32,5 +32,12 @@ describe('SVG Path tokenizer', () => {
             const tokens = getTokens(path);
             assert.contains(token => token.token === expectedToken, tokens);
         });
+    });
+
+    it('should create correct signature with non repeating coomand', () => {
+        const path = 'M 100,200 L 200,200 L 200,100 Z'
+        const signature = getSignature(path);
+
+        assert.equals('MLLZ', signature);
     });
 });
