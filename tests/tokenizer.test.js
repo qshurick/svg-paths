@@ -1,6 +1,6 @@
 const { describe, it } = require('./lib/testRunner');
 const { assert } = require('./lib/assertions');
-const { getTokens, getSignature } = require('../src/main');
+const { getTokens, getSignature, fixBoth, formatPath } = require('../src/main');
 
 const supportedCommands = {
     'Move to point with absolute coordinates': ['M 100 101', 'M'],
@@ -39,5 +39,27 @@ describe('SVG Path tokenizer', () => {
         const signature = getSignature(path);
 
         assert.equals('MLLZ', signature);
+    });
+
+    it('should return same paths when no adjustment needed', () => {
+        const pathA = 'M 100 100 L 50 50 Q 120 120 100 100Z';
+        const pathB = 'M 10 10 L 500 500 Q 12 12 100 100Z';
+
+        const [adjustedPathA, adjustedPathB] = fixBoth(pathA, pathB);
+
+        assert.equals(getSignature(adjustedPathA), getSignature(adjustedPathB));
+        assert.equals(formatPath(pathA), adjustedPathA);
+        assert.equals(formatPath(pathB), adjustedPathB);
+    });
+
+    it('should add zero tokens to match the paths', () => {
+        const pathA = 'm 0 0 l 100 100 l 200 200 z';
+        const pathB = 'm 100 100 c 50 50 100 100 200 200 z';
+
+        const [adjustedPathA, adjustedPathB] = fixBoth(pathA, pathB);
+
+        assert.equals(getSignature(adjustedPathA), getSignature(adjustedPathB));
+        assert.equals('m 0 0 l 100 100 l 200 200 c 0 0 0 0 0 0 z', adjustedPathA);
+        assert.equals('m 100 100 l 0 0 l 0 0 c 50 50 100 100 200 200 z', adjustedPathB);
     });
 });
