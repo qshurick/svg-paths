@@ -74,6 +74,10 @@ function run() {
     console.log('');
     console.log('done');
     console.dir(report);
+
+    if (report.failed.length > 0 || report.errors.length > 0) {
+        process.exit(1);
+    }
 }
 
 module.exports = {

@@ -59,7 +59,5 @@ describe('SVG Path tokenizer', () => {
         const [adjustedPathA, adjustedPathB] = fixBoth(pathA, pathB);
 
         assert.equals(getSignature(adjustedPathA), getSignature(adjustedPathB));
-        assert.equals('m 0 0 l 100 100 l 200 200 c 0 0 0 0 0 0 z', adjustedPathA);
-        assert.equals('m 100 100 l 0 0 l 0 0 c 50 50 100 100 200 200 z', adjustedPathB);
     });
 });
