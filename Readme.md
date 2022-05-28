@@ -5,8 +5,7 @@ order of the moving point in mind, and that's hard. This tool aims to
 automatically adjust some of the paths in the SVG, so the animation doesn't
 break. When build manually.
 
-Currently it only works with relative paths, since for absolute paths
-correction it needs to track the coordinates of the previous point.
+![CI](https://github.com/qshurick/svg-paths/actions/workflows/tests.yml/badge.svg)
 
 ## How to use
 
