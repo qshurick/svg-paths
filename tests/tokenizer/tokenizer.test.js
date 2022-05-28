@@ -1,6 +1,5 @@
-const { describe, it } = require('./lib/testRunner');
-const { assert } = require('./lib/assertions');
-const { getTokens, getSignature, fixBoth, formatPath } = require('../src/main');
+const { describe, it, assert } = require('../lib');
+const { getTokens } = require('../../src/main');
 
 const supportedCommands = {
     'Move to point with absolute coordinates': ['M 100 101', 'M'],
@@ -25,39 +24,12 @@ const supportedCommands = {
     'Close path 2': ['z', 'z'],
 };
 
-describe('SVG Path tokenizer', () => {
+describe('SVG path tokenizer', () => {
     Object.keys(supportedCommands).map(testName => {
         it(`should support ${testName}`, () => {
             const [path, expectedToken] = supportedCommands[testName];
             const tokens = getTokens(path);
             assert.contains(token => token.token === expectedToken, tokens);
         });
-    });
-
-    it('should create correct signature with non repeating coomand', () => {
-        const path = 'M 100,200 L 200,200 L 200,100 Z'
-        const signature = getSignature(path);
-
-        assert.equals('MLLZ', signature);
-    });
-
-    it('should return same paths when no adjustment needed', () => {
-        const pathA = 'M 100 100 L 50 50 Q 120 120 100 100Z';
-        const pathB = 'M 10 10 L 500 500 Q 12 12 100 100Z';
-
-        const [adjustedPathA, adjustedPathB] = fixBoth(pathA, pathB);
-
-        assert.equals(getSignature(adjustedPathA), getSignature(adjustedPathB));
-        assert.equals(formatPath(pathA), adjustedPathA);
-        assert.equals(formatPath(pathB), adjustedPathB);
-    });
-
-    it('should add zero tokens to match the paths', () => {
-        const pathA = 'm 0 0 l 100 100 l 200 200 z';
-        const pathB = 'm 100 100 c 50 50 100 100 200 200 z';
-
-        const [adjustedPathA, adjustedPathB] = fixBoth(pathA, pathB);
-
-        assert.equals(getSignature(adjustedPathA), getSignature(adjustedPathB));
     });
 });
